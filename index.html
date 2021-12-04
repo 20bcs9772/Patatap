@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patatap</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="./paper-full.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.js" type="text/javascript"></script>
+    <script type="text/paperscript" canvas="myCanvas">
+        alert('PRESS ANY KEY TO START');
+        function p(){
+            var u = Math.floor(Math.random()*26)+1;
+            var sound = new Howl({
+                src: ['sounds/'+u+'.mp3']
+            })
+            return sound.play();
+        }
+        var circles = [];
+        function onKeyDown(event) {
+            p();
+            var abc = event.event.charCode;
+            var height=view.size.height;
+            var width=view.size.width; 
+            var b= new Path.Circle(new Point(Math.floor(Math.random()*height)+1000, Math.floor(Math.random()*width)) * Point.random(), Math.random()*100 + 50);
+            b.fillColor =new Color({ hue: Math.random() * 360, saturation: 1, brightness: 1 });
+            circles.push(b);
+        }
+        function onFrame(event) {
+            for(var i=0;i<circles.length;i++){
+                circles[i].fillColor.hue += 2;
+                circles[i].scale(0.96);
+                if(circles[i].area < 1){
+                    circles[i].remove(); // remove the circle from the canvas
+                    circles.splice(i, 1); // remove the circle from the array
+                    console.log(circles);
+                  }
+            }
+        }
+    </script>
+</head>
+<body>
+    <canvas id="myCanvas"></canvas>
+</body>
+</html>
